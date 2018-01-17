@@ -1,0 +1,9 @@
+.Link {
+    cursor: pointer;
+    color: white;
+    margin: 0 8px;
+}
+.Link.Active {
+    font-size: 3rem;
+    border-bottom: 2px solid white;
+}
