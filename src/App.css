@@ -1,6 +1,4 @@
 .App {
-  display: flex;
-  text-align: center;
   width: 100%;
   height: 100vh;
   background-image: url('./assets/images/bg/bg_first.png');
@@ -10,4 +8,21 @@
 .DataContainer {
   display: flex;
   align-items: center;
+}
+
+.HeaderTitle{
+  display: flex;
+  flex-direction: column;
+  height: 110px;
+  min-width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.Main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
 }

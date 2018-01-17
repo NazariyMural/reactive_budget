@@ -28,11 +28,11 @@ class App extends Component {
 
 
     render() {
-        const { date, navSelected } = this.state;
+        const { date } = this.state;
         return (
             <MuiThemeProvider>
                 <div className={styles.App}>
-                    <header>
+                    <header className={styles.HeaderTitle}>
                         <h1>Реактивний бюджет</h1>
                         <div className={styles.DataContainer}>
                             <span>{date.format('DD.MM.YY')}</span>
@@ -46,7 +46,7 @@ class App extends Component {
                             </IconButton>
                         </div>
                     </header>
-                    <main>
+                    <main className={styles.Main}>
                         <Header />
                             <Switch>
                                 <Route exact path="/" component={Expanse} />

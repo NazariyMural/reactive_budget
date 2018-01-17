@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import styles from './Expanse.css';
+// import styles from './Expanse.css';
 
 
 
-const expanse = (props) => {
-    return (
-        <div>
-            <span>Витрати сьогодні</span>
-        </div>
-    )
+class Expanse extends Component {
+    render() {
+        return (
+            <div>
+                <span>Витрати сьогодні</span>
+            </div>
+        )
+    }
 }
 
-export default expanse;
+export default Expanse;

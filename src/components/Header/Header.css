@@ -1,23 +1,36 @@
 .Header {
     display: flex;
-    justify-content: center;
     font-size: 25px;
-    padding: 40px 0 15px;
 }
 .HeaderListItem {
     display: flex;
     flex-direction: row;
-    width: 100%;
 }
 .HeaderListItem .HeaderItem{
     display: inline-block;
-    margin: 50px;
     transition: .2s;
     padding: 1em;
 }
 .HeaderListItem .HeaderItem a {
     display: inline-block;
+    position: relative;
 }
-.Active {
-    color: rgb(228, 22, 22);
+
+.HeaderListItem .HeaderItem a::after {
+    position: absolute;
+    bottom: -10px;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    content: '';
+    transition: all .35s;
+    background-color: #fff;
+    transform: scaleX(0);
 }
+
+.HeaderListItem .HeaderItem a.Active::after{
+    transform: scaleX(1.5);
+}
+/* .Active {
+    transform: scaleX(2);
+} */

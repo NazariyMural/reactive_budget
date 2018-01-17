@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const incomes = (props) => {
-    return (
-        <div>
-            <span>Дохід</span>
-        </div>
-    )
+
+class Incomes extends Component {
+    render() {
+        return (
+            <div>
+                <span>Дохід</span>
+            </div>
+        )
+    }
 }
 
-export default incomes;
+export default Incomes;
