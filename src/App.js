@@ -10,7 +10,9 @@ import Header from './components/Header/Header';
 import Expanse from './components/Expanse/Expanse';
 import Incomes from './components/Incomes/Incomes';
 import { Switch, Route } from 'react-router-dom';
-import { findLastIndex } from 'lodash'
+import Table from './components/Table/Table';
+import Perspactive from './components/Perspactive/Perspactive';
+
 
 
 class App extends Component {
@@ -24,7 +26,6 @@ class App extends Component {
                 category: '',
             },
             transactions: [],
-
         };
     }
     handleSubtractDay = () => {
@@ -41,12 +42,10 @@ class App extends Component {
     }
 
     //just grabbed methods
-    handleSubmit = (sum, category) => {
+    handleSubmit = (sum, category, cuurency) => {
         const { date: todayDate, transactions } = this.state
 
-        const _newTransaction = { date: todayDate.format('DD.MM.YY'), category: category, sum: sum }
-
-        
+        const _newTransaction = { date: todayDate.format('DD.MM.YY'), category: category, sum: sum, cuurency: cuurency }
 
         /* We create transaction array witch contain past transaction from state (it helps for forting and inutability) */
         const newTransactions = [...transactions, _newTransaction];
@@ -56,12 +55,19 @@ class App extends Component {
             const bDate = moment(b.date, 'DD.MM.YY');
             return aDate.isAfter(bDate)
         })
-        
+        console.log(newTransactions);
         this.setState({ transactions: newTransactions });
     }
 
+    onToday = () => {
+
+        const { transactions, date } = this.state;
+
+        //let all incomes for this month 
+    }
+
     render() {
-        const { date } = this.state;
+        const { date, transactions } = this.state;
         return (
             <MuiThemeProvider>
                 <div className={styles.App}>
@@ -80,19 +86,21 @@ class App extends Component {
                         </div>
                     </header>
                     <main className={styles.Main}>
+                        <Perspactive canSpend={this.onToday}/>
                         <Header />
                         <Switch>
                             <Route exact path="/" render={() => (
                                 <Expanse
                                     //onSubmit function will be executed inside Expanse component with two parament (sum, transaction)
-                                    onSubmit={(sum, transaction) => this.handleSubmit(sum, transaction)} />
+                                    onSubmit={(sum, transaction, cuurency) => this.handleSubmit(sum, transaction, cuurency)} />
                             )} />
 
                             <Route path="/incomes"  render={() => (
                                 <Incomes
-                                    onSubmit={(sum, transaction) => this.handleSubmit(sum, transaction)} />
+                                    onSubmit={(sum, transaction, cuurency) => this.handleSubmit(sum, transaction, cuurency)} />
                             )} />
                         </Switch>
+                        <Table transactions={transactions}/>
                     </main>
                 </div>
 

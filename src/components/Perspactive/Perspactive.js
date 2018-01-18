@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
+import styles from './Perspactive.css'
 
-
-
-const perspactive = (props) => {
+const perspactive = ( { canSpend } ) => {
     return (
-        <div>
-            <span>Перспективи сьогодні</span>
+        <div className={styles.Perspactive}>
+            <span>Cьогодні Ти можеш витратити: {canSpend()}</span>
         </div>
     )
 }

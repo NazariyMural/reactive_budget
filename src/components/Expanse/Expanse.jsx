@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+
 const style = {
     inputTextArea: {
         color: '#c9c9c9',
@@ -20,7 +21,7 @@ const style = {
 
     },
     inputWidth: {
-        width: 140,
+        width: 239,
     },
     inputWidthExpanses: {
         width: 100,
@@ -42,7 +43,7 @@ const style = {
         height: 56,
         paddingRight: 10,
         color: '#b9b9b9',
-        left: 24,
+        left: 44,
         top: 40
     }
 }
@@ -52,7 +53,7 @@ class Expanse extends Component {
             expanse: '',
             category: '',
         },
-        selectValue: '₴',
+        selectValue: 'UAH',
     }
 
     handleInputChange = (ev) => {
@@ -63,15 +64,13 @@ class Expanse extends Component {
 
     handleSelectChange = (event, index, selectValue) => this.setState({ selectValue });
 
-
-
-
     handleSubmitTransaction = () => {
         const { onSubmit } = this.props;
         let expanse = { ...this.state.expanse }
+        const  { selectValue } = this.state;
 
         //execute the onSubmit function with two parement one olways should be negative
-        onSubmit(-1 * Math.abs(parseFloat(expanse.expanse)), expanse.category);
+        onSubmit(-1 * Math.abs(parseFloat(expanse.expanse)), expanse.category, selectValue);
 
         //and clear input field 
         expanse.category = '';
@@ -102,15 +101,15 @@ class Expanse extends Component {
                     iconStyle={style.iconStyle}
                     labelStyle={style.labelStyle}
                 >
-                    <MenuItem value={'$'} primaryText="USD" />
-                    <MenuItem value={'₴'} primaryText="UAH" />
-                    <MenuItem value={'zł'} primaryText="PLN" />
-                    <MenuItem value={'€'} primaryText="EUR" />
+                    <MenuItem value={'USD'} primaryText="$" />
+                    <MenuItem value={'UAH'} primaryText="₴" />
+                    <MenuItem value={'PLN'} primaryText="zł" />
+                    <MenuItem value={'EUR'} primaryText="€" />
                 </SelectField>
                 <br />
                 <span className={styles.SpanTitle}>Категорія:</span>
                 <TextField
-                    hintText="Категорія"
+                    hintText="категорія витрат"
                     hintStyle={style.inputTextArea}
                     multiLine={false}
                     inputStyle={style.inputStyle}
