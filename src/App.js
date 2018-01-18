@@ -10,6 +10,8 @@ import Header from './components/Header/Header';
 import Expanse from './components/Expanse/Expanse';
 import Incomes from './components/Incomes/Incomes';
 import { Switch, Route } from 'react-router-dom';
+import { findLastIndex } from 'lodash'
+
 
 class App extends Component {
     constructor(props) {
@@ -21,6 +23,7 @@ class App extends Component {
                 expanse: '',
                 category: '',
             },
+            transactions: [],
 
         };
     }
@@ -37,9 +40,24 @@ class App extends Component {
         this.setState({ expanse })
     }
 
+    //just grabbed methods
+    handleSubmit = (sum, category) => {
+        const { date: todayDate, transactions } = this.state
 
-    handleSubmit = ( sum, transaction) => {
-        console.log(sum, transaction);
+        const _newTransaction = { date: todayDate.format('DD.MM.YY'), category: category, sum: sum }
+
+        
+
+        /* We create transaction array witch contain past transaction from state (it helps for forting and inutability) */
+        const newTransactions = [...transactions, _newTransaction];
+
+        newTransactions.sort( ( a, b ) => {
+            const aDate = moment(a.date, 'DD.MM.YY');
+            const bDate = moment(b.date, 'DD.MM.YY');
+            return aDate.isAfter(bDate)
+        })
+        
+        this.setState({ transactions: newTransactions });
     }
 
     render() {
@@ -52,12 +70,12 @@ class App extends Component {
                         <div className={styles.DataContainer}>
                             <span>{date.format('DD.MM.YY')}</span>
                             <IconButton
-                                onClick={this.handleSubtractDay}>
-                                <Add />
-                            </IconButton>
-                            <IconButton
                                 onClick={this.handleAddDay}>
                                 <Remove />
+                            </IconButton>
+                            <IconButton
+                                onClick={this.handleSubtractDay}>
+                                <Add />
                             </IconButton>
                         </div>
                     </header>
@@ -66,14 +84,14 @@ class App extends Component {
                         <Switch>
                             <Route exact path="/" render={() => (
                                 <Expanse
-                                    change={(ev) => this.handleInputChange(ev)}
-                                    inputValue={this.state.expanse} 
-
                                     //onSubmit function will be executed inside Expanse component with two parament (sum, transaction)
-                                    onSubmit={(sum, transaction) => this.handleSubmit(sum, transaction)}/>
+                                    onSubmit={(sum, transaction) => this.handleSubmit(sum, transaction)} />
                             )} />
 
-                            <Route path="/incomes" component={Incomes} />
+                            <Route path="/incomes"  render={() => (
+                                <Incomes
+                                    onSubmit={(sum, transaction) => this.handleSubmit(sum, transaction)} />
+                            )} />
                         </Switch>
                     </main>
                 </div>

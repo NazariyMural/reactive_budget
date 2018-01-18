@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import styles from './Expanse.css';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 const style = {
     inputTextArea: {
@@ -15,22 +17,42 @@ const style = {
         opasity: .7,
         fontWeight: 100,
         fontSize: 14,
+
+    },
+    inputWidth: {
+        width: 140,
+    },
+    inputWidthExpanses: {
+        width: 100,
     },
     buttonPrintInput: {
         margin: '12',
         background: 'transparent',
 
+    },
+    selectField: {
+        height: 76,
+        width: 90,
+    },
+    iconStyle:{
+        top: 30
+    },
+    labelStyle:{
+        lineHeight: 1.5,
+        height: 56,
+        paddingRight: 10,
+        color: '#b9b9b9',
+        left: 24,
+        top: 40
     }
 }
-
-
-
 class Expanse extends Component {
     state = {
         expanse: {
             expanse: '',
             category: '',
         },
+        selectValue: '₴',
     }
 
     handleInputChange = (ev) => {
@@ -39,13 +61,17 @@ class Expanse extends Component {
         this.setState({ expanse })
     }
 
+    handleSelectChange = (event, index, selectValue) => this.setState({ selectValue });
+
+
+
 
     handleSubmitTransaction = () => {
         const { onSubmit } = this.props;
         let expanse = { ...this.state.expanse }
 
         //execute the onSubmit function with two parement one olways should be negative
-        onSubmit( -1 * Math.abs(parseFloat(expanse.expanse)), expanse.category );
+        onSubmit(-1 * Math.abs(parseFloat(expanse.expanse)), expanse.category);
 
         //and clear input field 
         expanse.category = '';
@@ -62,26 +88,45 @@ class Expanse extends Component {
                     hintText="ваші витрати"
                     hintStyle={style.inputTextArea}
                     multiLine={false}
+                    style={style.inputWidthExpanses}
                     inputStyle={style.inputStyle}
                     onChange={(ev) => this.handleInputChange(ev)}
                     value={expanse}
                     name="expanse"
-                /><br />
-                <span className={styles.SpanTitle}>Внесіть витрати:</span>
+                />
+                <SelectField
+                    value={this.state.selectValue}
+                    onChange={this.handleSelectChange}
+                    style={style.selectField}
+                    floatingLabelStyle={style.inputTextArea}
+                    iconStyle={style.iconStyle}
+                    labelStyle={style.labelStyle}
+                >
+                    <MenuItem value={'$'} primaryText="USD" />
+                    <MenuItem value={'₴'} primaryText="UAH" />
+                    <MenuItem value={'zł'} primaryText="PLN" />
+                    <MenuItem value={'€'} primaryText="EUR" />
+                </SelectField>
+                <br />
+                <span className={styles.SpanTitle}>Категорія:</span>
                 <TextField
                     hintText="Категорія"
                     hintStyle={style.inputTextArea}
                     multiLine={false}
                     inputStyle={style.inputStyle}
+                    style={style.inputWidth}
                     value={category}
                     onChange={(ev) => this.handleInputChange(ev)}
                     name="category"
                 /><br />
+
                 <div className={styles.ButtonContainer}>
                     <RaisedButton
                         label="Внести"
-                        style={style.buttonPrintInput} 
-                        onClick={this.handleSubmitTransaction}/>
+                        style={style.buttonPrintInput}
+                        onClick={this.handleSubmitTransaction}
+                    />
+                    <br />
                 </div>
             </div>
         )

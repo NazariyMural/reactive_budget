@@ -1,0 +1,15 @@
+.Container {
+    flex-direction: column;
+}
+
+.SpanTitle {
+    margin-right: 15px;
+    display: inline-block;
+}
+
+.ButtonContainer {
+    display: flex;
+    margin: 15px 0;
+    align-items: center;
+    justify-content: center;
+}
