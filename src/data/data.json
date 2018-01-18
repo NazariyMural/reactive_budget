@@ -1,0 +1,32 @@
+[
+    {
+        "date": "01.01.18", 
+        "category": "Отримав заробітнтю плату", 
+        "sum": "22000", 
+        "cuurency": "UAH"
+    },
+    {
+        "date": "06.01.18", 
+        "category": "Свят Вечір", 
+        "sum": "-500", 
+        "cuurency": "UAH"
+    },
+    {
+        "date": "07.01.18", 
+        "category": "Різдво", 
+        "sum": "-700", 
+        "cuurency": "UAH"
+    },
+    {
+        "date": "07.01.18", 
+        "category": "Подарунки", 
+        "sum": "-1800", 
+        "cuurency": "UAH"
+    },
+    {
+        "date": "14.01.18", 
+        "category": "Пасивний дохід", 
+        "sum": "6500", 
+        "cuurency": "UAH"
+    }
+]

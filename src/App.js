@@ -12,6 +12,7 @@ import Incomes from './components/Incomes/Incomes';
 import { Switch, Route } from 'react-router-dom';
 import Table from './components/Table/Table';
 import Perspactive from './components/Perspactive/Perspactive';
+import axios from 'axios';
 
 
 
@@ -26,8 +27,23 @@ class App extends Component {
                 category: '',
             },
             transactions: [],
+            loading: false
         };
     }
+    componentWillMount() {
+        this.setState({ loading: true })
+    }
+    componentDidMount() {
+        axios.get('https://reactivebudget.firebaseio.com//.json')
+            .then(res => {
+                const transData = [...res.data];
+                this.setState({ transactions: transData, loading: false })
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+
     handleSubtractDay = () => {
         this.setState({ date: this.state.date.add(1, 'day') })
     }
@@ -50,24 +66,48 @@ class App extends Component {
         /* We create transaction array witch contain past transaction from state (it helps for forting and inutability) */
         const newTransactions = [...transactions, _newTransaction];
 
-        newTransactions.sort( ( a, b ) => {
+        newTransactions.sort((a, b) => {
             const aDate = moment(a.date, 'DD.MM.YY');
             const bDate = moment(b.date, 'DD.MM.YY');
             return aDate.isAfter(bDate)
         })
-        console.log(newTransactions);
         this.setState({ transactions: newTransactions });
     }
 
-    onToday = () => {
 
+    onToday = () => {
         const { transactions, date } = this.state;
 
-        //let all incomes for this month 
+        ///it just an objects transactions 
+        const currentMonthTransaction = transactions.filter(({ date: transactionDate }) => {
+            // console.log(moment(transactionDate.date).daysInMonth())
+            return (
+                moment(transactionDate, 'DD.MM.YY').isSame(date, 'month')
+            )
+        })
+        console.log(currentMonthTransaction);
+        //get all incomes sum 
+        const dailyMoney = currentMonthTransaction.reduce((acc, transaction) => {
+            console.log(transaction.sum * 1);
+            return transaction.sum * 1 > 0 ? transaction.sum * 1 + acc : acc;
+        }, 0) / moment(date).daysInMonth();
+        console.log(dailyMoney);
+
+        //тільки  транакції які були зроблені до поточного дня не включно
+        const transactionBeforeThisDay = currentMonthTransaction.filter(({ date: transactionDate }) => {
+            return moment(transactionDate, 'DD.MM.YY').isBefore(date, 'date')
+        })
+        console.log(transactionBeforeThisDay);
+
+        const expanseBeforeToday = transactionBeforeThisDay.reduce((acc, { sum }) => {
+            let numS = sum*1;
+            return numS < 0 ? numS + acc: acc
+        }, 0)
+        console.log(expanseBeforeToday);
     }
 
     render() {
-        const { date, transactions } = this.state;
+        const { date, transactions, loading } = this.state;
         return (
             <MuiThemeProvider>
                 <div className={styles.App}>
@@ -86,7 +126,7 @@ class App extends Component {
                         </div>
                     </header>
                     <main className={styles.Main}>
-                        <Perspactive canSpend={this.onToday}/>
+                        <Perspactive canSpend={this.onToday} loading={loading} />
                         <Header />
                         <Switch>
                             <Route exact path="/" render={() => (
@@ -95,12 +135,12 @@ class App extends Component {
                                     onSubmit={(sum, transaction, cuurency) => this.handleSubmit(sum, transaction, cuurency)} />
                             )} />
 
-                            <Route path="/incomes"  render={() => (
+                            <Route path="/incomes" render={() => (
                                 <Incomes
                                     onSubmit={(sum, transaction, cuurency) => this.handleSubmit(sum, transaction, cuurency)} />
                             )} />
                         </Switch>
-                        <Table transactions={transactions}/>
+                        <Table transactions={transactions} loading={loading}/>
                     </main>
                 </div>
 
